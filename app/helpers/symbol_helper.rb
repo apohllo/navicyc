@@ -1,8 +1,12 @@
 module SymbolHelper
   def format_comment(comment)
-    comment.gsub(/#\$[\w|-]+/) { |symbol|
-      "<a href=\"#\">#{symbol[2..-1]}</a>"
-    }
+    if comment
+      comment.gsub(/\\"/,'"').gsub(/#\$[\w|-]+/) do |symbol|
+        link_to symbol[2..-1],"#"
+      end
+    else
+      ""
+    end
   end
 
   def format_all_genls(generalize_arr)

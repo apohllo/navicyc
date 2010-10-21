@@ -1,35 +1,13 @@
-require 'cycr'
-
 class SymbolController < ApplicationController
   def show
-    client = Cyc::Client.new
-    @symbol = params[:name]
-    @all_genls = client.all_genls @symbol.to_sym
-    @max_specs = client.max_specs @symbol.to_sym
-    @comment = client.comment @symbol.to_sym
-    if @comment == nil
-      @comment = "no comment"
-    end
-    if @all_genls == nil
-      @all_genls = []
-    end
-    if @max_specs == nil
-      @max_specs = []
-    end
+    @symbol = CycSymbol.new(params[:name].to_sym)
   end
 
   def show_denotation
-    client = Cyc::Client.new
     @name = params[:name]
-    denotaion = client.denotation_mapper params[:name]
+    denotaion = cyc.denotation_mapper params[:name]
     if denotaion != nil
-      @symbol = (client.denotation_mapper params[:name])[0]
-      @all_genls = client.all_genls @symbol
-      @max_specs = client.max_specs @symbol
-      @comment = client.comment @symbol
-    end
-    if @comment == nil
-      @comment = "no comment"
+      @symbol = CycSymbol.new((cyc.denotation_mapper params[:name])[0])
     end
     if @all_genls == nil
       @all_genls = []
@@ -40,8 +18,7 @@ class SymbolController < ApplicationController
   end
 
   def complete
-    client = Cyc::Client.new
-    completes = client.constant_complete params[:query]
+    completes = cyc.constant_complete params[:query]
 
     if completes
       completes_map = completes.collect { |complete|

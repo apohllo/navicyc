@@ -1,10 +1,16 @@
 %div{:id => @symbol}
   #comment.section
     %span.name=@symbol
-    = format_comment @comment
+    = format_comment @symbol.comment
   #generalize.section
-    %span.name Generalize
-    = format_all_genls @all_genls
+    %span.name A type of
+    = format_all_genls @symbol.min_genls
+  #instance_of.section
+    %span.name Instance of
+    = format_all_genls @symbol.min_isa
   #specification.section
-    %span.name Specification
-    = format_all_genls @max_specs
+    %span.name Subtypes
+    = format_all_genls @symbol.max_specs
+  #instances.section
+    %span.name Instances
+    = format_all_genls @symbol.instances
