@@ -61,19 +61,14 @@ Ext.extend(MainPanel, Ext.TabPanel, {
         var url;
         if (type === 'symbol') {
             url = "symbol/show";
-        }
-        else {
+        } else {
             url = "symbol/show_denotation/";
         }
         var newPanel = this.add(new DocPanel({
             id: this.tabprefix + symbol,
             title: symbol,
-            autoLoad: {
-                url: url,
-                params: {
-                    name: symbol
-                }
-            }
+            url: url,
+            symbol: symbol
         }));
         this.setActiveTab(newPanel);
         this.fireEvent('element_loaded', symbol, type);

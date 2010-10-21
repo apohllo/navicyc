@@ -1,4 +1,15 @@
 module SymbolHelper
+  def format_assertion(assertion,symbol,relation,index)
+    if assertion =~ / /
+      format_comment(assertion)
+    else
+      assertion = [assertion] unless assertion.is_a?(Array)
+      assertion.unshift(relation)
+      assertion.insert(index,symbol)
+      "(#{format_all_genls(assertion)})"
+    end
+  end
+
   def format_comment(comment)
     if comment
       comment.gsub(/\\"/,'"').gsub(/#\$[\w|-]+/) do |symbol|
@@ -10,6 +21,7 @@ module SymbolHelper
   end
 
   def format_all_genls(generalize_arr)
+    generalize_arr ||= []
     return_string = ''
     generalize_processor = lambda { |curr_generalize_arr|
       curr_generalize_arr.each do |generalize|
@@ -18,11 +30,12 @@ module SymbolHelper
           generalize_processor.call(generalize)
           return_string += '</div>'
         else
-          return_string += "<a href=\"#\">#{generalize}</a> "
+          return_string += link_to("#{generalize} ", "#")
         end
       end
     }
     generalize_processor.call(generalize_arr)
     return_string
   end
+
 end
