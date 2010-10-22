@@ -24,7 +24,7 @@ var AssertionTree = Ext.extend(Ext.tree.TreePanel, {
     },
     listeners :{
         click: function(node) {
-            Ext.get("tab-"+this.symbol+"_contents").getUpdater().update({
+            Ext.getCmp("tab-"+this.symbol+"_contents").body.load({
                 url: 'symbol/assertions',
                 params: {
                     type: node.attributes.type,
