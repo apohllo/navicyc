@@ -14,6 +14,7 @@ Ext.onReady(function() {
     mainPanel.on('element_loaded', function(symbol, type) {
         symbolPanel.addToStore(symbol, type);
     });
+    //mainPanel.items.get(0).expandTree();
 
     var viewport = new Ext.Viewport({
         layout: 'border',

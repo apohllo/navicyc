@@ -10,16 +10,11 @@ var MainPanel = function() {
         activeTab: 0,
         tabprefix: 'tab-',
 
-        items: {
-            id: 'welcome-panel',
-            title: 'NaviCyc Home',
-            autoLoad: {
-                url: 'home/welcome',
-                scope: this
-            },
-            iconCls: 'icon-docs',
+        items: [new ApiPanel({
+            id: 'api-panel',
+            title: 'NaviCyc API',
             autoScroll: true
-        }
+        })]
     });
 };
 

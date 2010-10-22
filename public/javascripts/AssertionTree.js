@@ -2,6 +2,15 @@ var AssertionTree = Ext.extend(Ext.tree.TreePanel, {
     animate:true,
     autoScroll:true,
     rootVisible:false,
+    enableDD:true,
+    containerScroll: true,
+    border: false,
+    dropConfig: {appendOnly:true},
+    root : {
+        nodeType: 'async',
+        text: 'assertions',
+        expanded: true,
+    },
     constructor: function(config){
         this.symbol = config['symbol'];
         url = 'symbol/assertions/'+config['symbol'];
@@ -12,15 +21,6 @@ var AssertionTree = Ext.extend(Ext.tree.TreePanel, {
             this.baseParams.relation = node.attributes.relation;
         });
         AssertionTree.superclass.constructor.call(this,config);
-    },
-    enableDD:true,
-    containerScroll: true,
-    border: false,
-    dropConfig: {appendOnly:true},
-    root : {
-        nodeType: 'async',
-        text: 'assertions',
-        expanded: true,
     },
     listeners :{
         click: function(node) {

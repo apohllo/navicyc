@@ -1,0 +1,7 @@
+- @functions.each do |function|
+  .section
+    = function.kind
+    %span.name= function.name
+    = "#{function.arguments} #{function.result}"
+    %br
+    = function.documentation

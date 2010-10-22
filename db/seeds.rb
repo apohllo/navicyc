@@ -5,3 +5,9 @@
 #   
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
+Language.create(:name => "SubL LISP",
+                :description => "Cyc implementation language",
+                :url => "http://www.cyc.com/cycdoc/ref/subl-reference.html")
+Language.create(:name => "SubL CORE",
+                :description => "SubL core Cyc-related functions",
+                :url => "http://www.opencyc.org/doc/opencycapi")
