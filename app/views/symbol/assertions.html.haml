@@ -1,8 +1,13 @@
 %div{:id => @symbol}
-  #assertions.section
-    %strong= "GAF Arg : #{@index}"
-    %br
-    = "Mt : #{link_to @mt,"#"}"
-    %ul
-      - @assertions.each do |assertion|
-        %li= format_assertion assertion.to_s,@symbol,@relation,@index
+  - @assertions.each do |index,relations|
+    #assertions.section
+      %span.name= "GAF Arg : #{index}"
+      - (relations || []).each do |relation,mts|
+        %br
+        %span.name= relation
+        %br
+        - (mts || []).each do |mt,assertions|
+          = "Mt : #{link_to mt,"#"}"
+          %ul
+            - (assertions || []).each do |assertion|
+              %li= format_assertion assertion,@symbol

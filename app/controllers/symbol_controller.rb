@@ -12,7 +12,7 @@ class SymbolController < ApplicationController
     render :action => "show"
   end
 
-  def assertions
+  def assertion_tree
     @symbol = CycSymbol.new(params[:id].to_sym)
     case params[:type]
     when "general"
@@ -29,18 +29,22 @@ class SymbolController < ApplicationController
       render :json => mts.sort_by{|m| m.to_s}.
         map{|mt| {:text => mt, :type => "microtheory", :index => index, 
           :relation => relation, :mt => mt, :leaf => true, :cls => "folder"}}
-    when "microtheory"
-      @index = params[:index].to_i
-      @relation = params[:relation]
-      @mt = params[:mt]
-      cyc.debug = true
-      @assertions = @symbol.pred_values_in_mt(@relation.to_sym,@mt.to_sym,@index)
     else
       indices = @symbol.key_gaf_arg_index
       render :json => [
         {:text => "General info", :type => "general", :leaf => true}
       ] + indices.sort.map{|i| {:text => "Arg #{i}", :type => "arg", :index => i}}
     end
+  end
+
+  def assertions
+    @symbol = CycSymbol.new(params[:id].to_sym)
+    index = params[:index].to_i
+    relation = params[:relation]
+    relation = nil if relation.empty?
+    mt = params[:mt]
+    mt = nil if mt.empty?
+    @assertions = @symbol.assertions_tree(index,relation,mt)
   end
 
   def complete

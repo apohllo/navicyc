@@ -1,13 +1,6 @@
 module SymbolHelper
-  def format_assertion(assertion,symbol,relation,index)
-    if assertion =~ / /
-      format_comment(assertion)
-    else
-      assertion = [assertion] unless assertion.is_a?(Array)
-      assertion.unshift(relation)
-      assertion.insert(index,symbol)
-      "(#{format_all_genls(assertion)})"
-    end
+  def format_assertion(assertion,symbol)
+    "(#{format_all_genls(assertion.formula)})"
   end
 
   def format_comment(comment)
@@ -30,7 +23,11 @@ module SymbolHelper
           generalize_processor.call(generalize)
           return_string += '</div>'
         else
-          return_string += link_to("#{generalize} ", "#")
+          if generalize.is_a?(Symbol)
+            return_string += link_to("#{generalize} ", "#")
+          else
+            return_string += format_comment(generalize)
+          end
         end
       end
     }
