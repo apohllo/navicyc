@@ -9,6 +9,22 @@
     -webkit-border-radius: 5px;
 }
 
+.individual {
+    background-color: #89E894;
+}
+
+.relation {
+    background-color: #EFBC70;
+}
+
+.collection {
+    background-color: #78D5E3;
+}
+
+.microtheory {
+    background-color: #E3DE78;
+}
+
 .symbolscollection {
     margin: 0px 2px 0px 2px;
     padding-left: 2px;

@@ -11,6 +11,98 @@ class CycSymbol
     @symbol.to_s
   end
 
+  def gaf_index(index=nil,relation=nil)
+    result =
+      if index.nil?
+        indices = self.key_gaf_arg_index
+        indices.zip(indices.map do |index|
+          self.num_gaf_arg_index(index.to_i)
+        end)
+      else
+        index = index.to_i
+        if relation.nil?
+          relations = self.key_gaf_arg_index_nart(index)
+          relations.zip(relations.map do |relation|
+            self.num_gaf_arg_index(index,relation.to_sym) rescue 0
+          end)
+        else
+          relation = relation.to_sym
+          mts = self.key_gaf_arg_index(index,relation)
+          mts.zip(mts.map do |mt|
+            self.num_gaf_arg_index(index,relation,mt.to_sym)
+          end)
+        end
+      end
+    result.sort_by{|e1,e2| e1.to_s}
+  end
+
+  def extent_index
+    mts = self.key_predicate_extent_index
+    result =
+      mts.zip(mts.map do |mt|
+        self.num_predicate_extent_index(mt)
+      end)
+    result.sort_by{|e1,e2| e1.to_s}
+  end
+
+  def generalizations
+    if collection?
+      self.min_genls
+    elsif relation?
+      self.min_genl_predicates
+    elsif microtheory?
+      self.pred_values_in_any_mt(:genlMt,1,2)
+    else
+      []
+    end
+  end
+
+  def specializations
+    if collection?
+      self.max_specs
+    elsif relation?
+      self.max_spec_predicates
+    elsif microtheory?
+      self.pred_values_in_any_mt(:genlMt,2,1)
+    else
+      []
+    end
+  end
+
+  def kind
+    if relation?
+      :relation
+    elsif collection?
+      :collection
+    elsif microtheory?
+      :microtheory
+    elsif individual?
+      :individual
+    end
+  end
+
+  def arguments
+    indices = self.pred_values_in_any_mt(:argIsa, 1, 2) || []
+    arguments = self.pred_values_in_any_mt(:argIsa, 1, 3) || []
+    arguments.zip(indices).sort_by{|a,i| i}
+  end
+
+  def relation?
+    cyc.isa?(@symbol,:Relation)
+  end
+
+  def collection?
+    cyc.isa?(@symbol,:Collection)
+  end
+
+  def instance?
+    cyc.isa?(@symbol,:Instance)
+  end
+
+  def microtheory?
+    cyc.isa?(@symbol,:Microtheory)
+  end
+
   def assertions_tree(index,relation,mt)
     result = {}
     if index
@@ -18,6 +110,20 @@ class CycSymbol
     else
       index_indices.each do |index|
         index_tree(index,result)
+      end
+    end
+    result
+  end
+
+  def extent_tree(mt)
+    result = {}
+    index_tree = result[0] = {}
+    relation_tree = index_tree[self] = {}
+    if mt
+      relation_extent_tree(mt,relation_tree)
+    else
+      self.key_predicate_extent_index.each do |mt|
+        relation_extent_tree(mt,relation_tree)
       end
     end
     result
@@ -48,6 +154,10 @@ class CycSymbol
 
   def mt_tree(index,relation,mt,tree)
     tree[mt] = self.gather_gaf_arg_index_nart(index,relation.to_sym,mt.to_sym)
+  end
+
+  def relation_extent_tree(mt,tree)
+    tree[mt] = self.gather_predicate_extent_index_nart(mt.to_sym)
   end
 
   def mt_indices(index,relation)

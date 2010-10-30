@@ -1,4 +1,5 @@
 %div{:id => @symbol}
+  = render :partial => "caption"
   - @assertions.each do |index,relations|
     #assertions.section
       %span.name= "GAF Arg : #{index}"

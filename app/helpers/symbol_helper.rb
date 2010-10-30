@@ -35,4 +35,19 @@ module SymbolHelper
     return_string
   end
 
+  def format_caption(symbol)
+    ": #{@symbol.kind}"
+  end
+
+  def argument_title(index)
+    aux =
+      if index == "1"
+        "(domain) "
+      elsif index == "2"
+        "(range) "
+      end
+
+    "#{index} argument #{aux}type "
+  end
+
 end

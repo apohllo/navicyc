@@ -1,16 +1,33 @@
 %div{:id => @symbol}
+  = render :partial => "caption"
   #comment.section
-    %span.name= @symbol
     = format_comment @symbol.comment
-  #generalize.section
-    %span.name A type of
-    = format_all_genls @symbol.min_genls
   #instance_of.section
     %span.name Instance of
     = format_all_genls @symbol.min_isa
-  #specification.section
-    %span.name Subtypes
-    = format_all_genls @symbol.max_specs
-  #instances.section
-    %span.name Instances
-    = format_all_genls @symbol.instances
+  - if @symbol.relation?
+    #arguments.section
+      %ul
+        - @symbol.arguments.each do |argument,index|
+          %li
+            %span.name= argument_title(index)
+            = link_to argument,"#"
+  - if @symbol.relation? || @symbol.collection? || @symbol.microtheory?
+    #generalization.section
+      %span.name
+        - if @symbol.microtheory?
+          Inherits from
+        - else
+          A type of
+      = format_all_genls @symbol.generalizations
+    #specialization.section
+      %span.name
+        - if @symbol.microtheory?
+          Is inherited by
+        - else
+          Subtypes
+      = format_all_genls @symbol.specializations
+  - if @symbol.collection?
+    #instances.section
+      %span.name Instances
+      = format_all_genls @symbol.instances
