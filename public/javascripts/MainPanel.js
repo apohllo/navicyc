@@ -59,6 +59,7 @@ Ext.extend(MainPanel, Ext.TabPanel, {
         } else {
             url = "symbol/show_denotation/";
         }
+        url = document.location.href + url;
         var newPanel = this.add(new DocPanel({
             id: this.tabprefix + symbol,
             title: symbol,

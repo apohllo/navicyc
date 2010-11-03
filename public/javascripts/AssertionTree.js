@@ -13,7 +13,7 @@ var AssertionTree = Ext.extend(Ext.tree.TreePanel, {
     },
     constructor: function(config){
         this.symbol = config['symbol'];
-        url = 'symbol/assertion_tree/'+config['symbol'];
+        url = document.location.href + 'symbol/assertion_tree/'+config['symbol'];
         this.loader = new Ext.tree.TreeLoader({dataUrl:url})
         this.loader.on("beforeload", function(treeLoader,node) {
             this.baseParams.type = node.attributes.type;
@@ -25,7 +25,7 @@ var AssertionTree = Ext.extend(Ext.tree.TreePanel, {
     listeners :{
         click: function(node) {
             Ext.getCmp("tab-"+this.symbol+"_contents").body.load({
-                url: 'symbol/assertions',
+                url: document.location.href + 'symbol/assertions',
                 params: {
                     type: node.attributes.type,
                     id: this.symbol,
