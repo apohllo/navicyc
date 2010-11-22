@@ -5,8 +5,8 @@ module SymbolHelper
 
   def format_comment(comment)
     if comment
-      comment.gsub(/\\"/,'"').gsub(/#\$[\w|-]+/) do |symbol|
-        link_to symbol[2..-1],"#"
+      comment.to_s.gsub(/#\$[\w|-]+,?/) do |symbol|
+        link_to symbol[2..-1].sub(/,$/,""),"#"
       end
     else
       ""
