@@ -1,6 +1,19 @@
 class CycSymbol
   def initialize(symbol)
     @symbol = symbol
+    if @symbol.is_a?(String)
+      if @symbol[0] == "'"
+        @symbol = @symbol.tr("'","")
+      elsif @symbol[0] != "\#"
+        @symbol = '#$' + @symbol
+      end
+      @symbol = cyc_parser.parse(@symbol) 
+    end
+    p @symbol
+  end
+
+  def comment
+    cyc.with_any_mt{|cyc| cyc.comment @symbol}
   end
 
   def method_missing(name,*rest)
@@ -9,6 +22,10 @@ class CycSymbol
 
   def to_s
     @symbol.to_s
+  end
+
+  def to_cyc(raw=false)
+    @symbol.to_cyc(raw)
   end
 
   def gaf_index(index=nil,relation=nil)
@@ -21,15 +38,15 @@ class CycSymbol
       else
         index = index.to_i
         if relation.nil?
-          relations = self.key_gaf_arg_index_nart(index)
+          relations = self.key_gaf_arg_index(index)
           relations.zip(relations.map do |relation|
-            self.num_gaf_arg_index(index,relation.to_sym) rescue 0
+            self.num_gaf_arg_index(index,CycSymbol.new(relation)) rescue 0
           end)
         else
-          relation = relation.to_sym
+          relation = CycSymbol.new(relation)
           mts = self.key_gaf_arg_index(index,relation)
           mts.zip(mts.map do |mt|
-            self.num_gaf_arg_index(index,relation,mt.to_sym)
+            self.num_gaf_arg_index(index,relation,CycSymbol.new(mt))
           end)
         end
       end
@@ -129,6 +146,8 @@ class CycSymbol
     result
   end
 
+
+
   protected
   def index_tree(index,tree,relation=nil,mt=nil)
     subtree = tree[index] = {}
@@ -153,15 +172,16 @@ class CycSymbol
   end
 
   def mt_tree(index,relation,mt,tree)
-    tree[mt] = self.gather_gaf_arg_index_nart(index,relation.to_sym,mt.to_sym)
+    tree[CycSymbol.new(mt)] = self.
+      gather_gaf_arg_index(index, CycSymbol.new(relation), CycSymbol.new(mt))
   end
 
   def relation_extent_tree(mt,tree)
-    tree[mt] = self.gather_predicate_extent_index_nart(mt.to_sym)
+    tree[mt] = self.gather_predicate_extent_index(CycSymbol.new(mt))
   end
 
   def mt_indices(index,relation)
-    self.key_gaf_arg_index(index,relation.to_sym)
+    self.key_gaf_arg_index(index,CycSymbol.new(relation))
   end
 
   def relation_indices(index)
@@ -170,6 +190,10 @@ class CycSymbol
 
   def index_indices
     self.key_gaf_arg_index
+  end
+
+  def cyc_parser
+    CYC_PARSER
   end
 
   def cyc

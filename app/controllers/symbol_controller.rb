@@ -1,6 +1,6 @@
 class SymbolController < ApplicationController
   def show
-    @symbol = CycSymbol.new(params[:name].to_sym)
+    @symbol = CycSymbol.new(params[:name])
   end
 
   def show_denotation
@@ -13,27 +13,29 @@ class SymbolController < ApplicationController
   end
 
   def assertion_tree
-    @symbol = CycSymbol.new(params[:id].to_sym)
+    #cyc.debug = true
+    @symbol = CycSymbol.new(params[:id])
     case params[:type]
     when "general"
-      redirect_to :action => "show", :name => params[:id]
+      redirect_to :action => "show", :name => params[:id] and return
     when "arg"
       index = params[:index]
       render :json => (@symbol.gaf_index(index).map do |relation,count|
         {:text => index_title(relation,count), :type => "relation",
-          :index => index, :relation => relation}
+          :index => index, :relation => relation.to_cyc(true)}
       end)
     when "relation"
       index = params[:index]
       relation = params[:relation]
       render :json => (@symbol.gaf_index(index,relation).map do |mt,count|
         {:text => index_title(mt,count), :type => "relation",
-          :index => index, :relation => relation, :mt => mt, :leaf => true}
+          :index => index, :relation => relation.to_cyc(true), 
+          :mt => mt.to_cyc(true), :leaf => true}
       end)
     when "extent"
       render :json => (@symbol.extent_index.map do |mt,count|
         {:text => index_title(mt,count), :type => "extent_in_mt",
-          :mt => mt, :leaf => true}
+          :mt => mt.to_cyc(true), :leaf => true}
       end)
     else
       indices = @symbol.gaf_index
@@ -48,7 +50,7 @@ class SymbolController < ApplicationController
   end
 
   def assertions
-    @symbol = CycSymbol.new(params[:id].to_sym)
+    @symbol = CycSymbol.new(params[:id])
     mt = params[:mt]
     mt = nil if mt.empty?
     relation = params[:relation]
@@ -83,10 +85,11 @@ class SymbolController < ApplicationController
 
   protected
   def index_title(index,count)
+    index = index.to_cyc(true).to_s.gsub(/['#\$]/,"")
     if count && count.to_i > 1
       "#{index} : #{count}"
     else
-      index.to_s
+      index
     end
   end
 end

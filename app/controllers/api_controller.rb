@@ -30,6 +30,9 @@ class ApiController < ApplicationController
       end
     when "function"
       @functions = Function.find_all_by_name(params[:text])
+    when "language"
+      @language = Language.find_by_name(params[:text])
+      render :action => "language"
     end
   end
 

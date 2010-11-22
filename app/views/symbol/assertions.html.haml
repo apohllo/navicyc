@@ -5,10 +5,10 @@
       %span.name= "GAF Arg : #{index}"
       - (relations || []).each do |relation,mts|
         %br
-        %span.name= relation
+        %span.name= format_comment(relation).tr("'","")
         %br
         - (mts || []).each do |mt,assertions|
-          = "Mt : #{link_to mt,"#"}"
+          = "Mt : #{format_comment(mt.to_cyc(true)).tr("'","")}"
           %ul
             - (assertions || []).each do |assertion|
               %li= format_assertion assertion,@symbol
