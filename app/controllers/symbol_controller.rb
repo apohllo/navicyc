@@ -13,7 +13,7 @@ class SymbolController < ApplicationController
   end
 
   def assertion_tree
-    cyc.debug = true
+    #cyc.debug = true
     @symbol = CycSymbol.new(params[:id])
     case params[:type]
     when "general"
