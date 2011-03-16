@@ -1,4 +1,4 @@
-Ext.BLANK_IMAGE_URL = document.location.href + 'stylesheets/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = document.location.href + '/stylesheets/images/default/s.gif';
 
 Ext.onReady(function() {
     Ext.QuickTips.init();

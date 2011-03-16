@@ -55,9 +55,9 @@ Ext.extend(MainPanel, Ext.TabPanel, {
     addSymbolTab: function(symbol, type) {
         var url;
         if (type === 'symbol') {
-            url = "symbol/show";
+            url = "/symbol/show";
         } else {
-            url = "symbol/show_denotation/";
+            url = "/symbol/show_denotation/";
         }
         url = document.location.href + url;
         var newPanel = this.add(new DocPanel({

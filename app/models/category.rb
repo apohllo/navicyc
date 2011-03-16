@@ -1,3 +1,5 @@
+require 'acts_as_tree'
+
 class Category < ActiveRecord::Base
   belongs_to :language
   has_many :functions

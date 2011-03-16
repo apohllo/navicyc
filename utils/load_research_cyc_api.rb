@@ -1,4 +1,5 @@
 require 'strscan'
+require 'acts_as_tree'
 require 'language'
 require 'category'
 require 'function'
@@ -8,7 +9,7 @@ language = Language.find_by_name("SubL Research")
 if language.nil?
   language = Language.create(:name => "SubL Research",
                 :description => "SubL documentation for ResearchCyc",
-                :url => "http://research.cyc.com")
+                :url => "http://research.cyc.com/doc/subldoc/module-index.html")
   ("A".."Z").each{|l| Category.create(:name => l, :language_id => language.id)}
 end
 
