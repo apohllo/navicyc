@@ -1,0 +1,11 @@
+.section
+  %h2
+    - unless resource.description.blank?
+      = "#{resource.description} "
+    - else
+      Description missing
+    - unless resource.format.blank?
+      = "(#{resource.format})"
+    - else
+      (format missing)
+  = link_to resource.url

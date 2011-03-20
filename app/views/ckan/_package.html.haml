@@ -1,0 +1,25 @@
+.section
+  %h2= "#{package.title} (#{package.name})"
+  %table
+    %tr
+      %th URL
+      %td= link_to package.url
+    %tr
+      %th Version
+      %td= package.version
+    %tr
+      %th License
+      %td= package.license_id
+    %tr
+      %th Author
+      %td= package.author
+    %tr
+      %th Author e-mail
+      %td= package.author_email
+    %tr
+      %th Maintainer
+      %td= package.maintainer
+    %tr
+      %th Maintainer e-mail
+      %td= package.maintainer_email
+  = markdown(package.notes)

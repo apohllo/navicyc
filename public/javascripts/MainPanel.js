@@ -14,6 +14,10 @@ var MainPanel = function() {
             id: 'api-panel',
             title: 'NaviCyc API',
             autoScroll: true
+        }),new CkanPanel({
+            id: 'ckan-panel',
+            title: 'CKAN',
+            autoScroll: true
         })]
     });
 };
@@ -59,7 +63,7 @@ Ext.extend(MainPanel, Ext.TabPanel, {
         } else {
             url = "/symbol/show_denotation/";
         }
-        url = document.location.href + url;
+        url = baseUrl() + url;
         var newPanel = this.add(new DocPanel({
             id: this.tabprefix + symbol,
             title: symbol,

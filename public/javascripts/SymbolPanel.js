@@ -18,7 +18,7 @@ Ext.extend(SymbolPanel, Ext.grid.GridPanel, {
             store: new Ext.data.JsonStore({
                 root: 'data',
                 fields:['name'],
-                url: document.location.href + '/symbol/complete'
+                url: baseUrl() + '/symbol/complete'
             }),
             displayField: 'name',
             autoWidth: true,

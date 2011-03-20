@@ -1,4 +1,8 @@
-Ext.BLANK_IMAGE_URL = document.location.href + '/stylesheets/images/default/s.gif';
+function baseUrl(){
+  return "http://localhost:3000";
+}
+
+Ext.BLANK_IMAGE_URL = baseUrl() + '/stylesheets/images/default/s.gif';
 
 Ext.onReady(function() {
     Ext.QuickTips.init();
