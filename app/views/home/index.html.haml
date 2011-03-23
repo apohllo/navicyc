@@ -22,4 +22,6 @@
     = javascript_include_tag "application"
   %body
     #header
-      .apptitle NaviCyc
+      .apptitle
+        NaviCyc
+        = link_to "logout", :controller => "user_sessions", :action => "destroy"

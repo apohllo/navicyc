@@ -1,0 +1,21 @@
+%h3 User details
+- form_for @user do |f|
+  %p
+    = f.error_messages
+  %p
+    = f.label :login
+    %br
+    = @user.login
+  %p
+    = label_tag :old_password
+    = text_field_tag :old_password
+  %p
+    = f.label :password
+    %br
+    = f.password_field :password
+  %p
+    = f.label :password_confirmation
+    %br
+    = f.password_field :password_confirmation
+  %p
+    = f.submit "Submit"

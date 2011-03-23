@@ -2,7 +2,7 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 # Examples:
-#   
+#
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Major.create(:name => 'Daley', :city => cities.first)
 Language.create(:name => "SubL LISP",
@@ -11,3 +11,10 @@ Language.create(:name => "SubL LISP",
 Language.create(:name => "SubL CORE",
                 :description => "SubL core Cyc-related functions",
                 :url => "http://www.opencyc.org/doc/opencycapi")
+
+user = User.new(:login => 'admin', :password => 'password',
+                :password_confirmation => 'passowrd',
+                :email => 'admin@host')
+user.save
+user.update_attribute(:admin,true)
+

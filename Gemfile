@@ -7,3 +7,5 @@ gem "haml", "3.0.21"
 gem "acts_as_tree"
 gem "ckan", "~> 0.0.2"
 gem "bluecloth", "2.1.0"
+gem 'authlogic'
+
