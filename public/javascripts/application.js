@@ -1,5 +1,9 @@
 function baseUrl(){
-  return "http://localhost:3000";
+  var str = document.location.href;
+  if(str.charAt(str.length-1) == "/"){
+    str = str.slice(0,str.length-1);
+  }
+  return str;
 }
 
 Ext.BLANK_IMAGE_URL = baseUrl() + '/stylesheets/images/default/s.gif';
