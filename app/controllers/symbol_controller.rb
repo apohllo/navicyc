@@ -29,7 +29,7 @@ class SymbolController < ApplicationController
       relation = params[:relation]
       render :json => (@symbol.gaf_index(index,relation).map do |mt,count|
         {:text => index_title(mt,count), :type => "relation",
-          :index => index, :relation => relation.to_cyc(true), 
+          :index => index, :relation => relation,
           :mt => mt.to_cyc(true), :leaf => true}
       end)
     when "extent"
@@ -69,18 +69,8 @@ class SymbolController < ApplicationController
 
   def complete
     completes = cyc.constant_complete params[:query]
-
-    if completes
-      completes_map = completes.collect { |complete|
-        {:name => complete}
-      }
-    else
-      completes_map = []
-    end
-
-    render :json => {:success => true,
-                     :data => completes_map
-    }
+    completes = completes.map{|c| {:name => c, :type => "symbol", :id => c} }
+    render :json => {:success => true, :data => completes}
   end
 
   protected

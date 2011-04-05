@@ -13,13 +13,7 @@ var ApiTree = Ext.extend(Ext.tree.TreePanel, {
     },
     listeners: {
         click: function(node) {
-            Ext.getCmp("api_contents").body.load({
-                url: baseUrl() + '/api/show',
-                params: {
-                    type: node.attributes.type,
-                    text: node.attributes.text
-                }
-            });
+                 this.loadContents(node.attributes.type,node.attributes.text);
         }
     },
     root: {
@@ -27,5 +21,14 @@ var ApiTree = Ext.extend(Ext.tree.TreePanel, {
         text: 'API',
         type: 'root',
         expanded: true
+    },
+    loadContents: function(type,text){
+            Ext.getCmp("api_contents").body.load({
+                url: baseUrl() + '/api/show',
+                params: {
+                    type: type,
+                    text: text
+                }
+            });
     }
 });

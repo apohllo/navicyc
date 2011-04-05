@@ -4,12 +4,11 @@ class CycSymbol
     if @symbol.is_a?(String)
       if @symbol[0] == "'"
         @symbol = @symbol.tr("'","")
-      elsif @symbol[0] != "\#"
+      elsif @symbol[0] !~ /[#(]/
         @symbol = '#$' + @symbol
       end
-      @symbol = cyc_parser.parse(@symbol) 
+      @symbol = cyc_parser.parse(@symbol)
     end
-    p @symbol
   end
 
   def comment
@@ -17,6 +16,7 @@ class CycSymbol
   end
 
   def method_missing(name,*rest)
+    super if name == :to_ary
     cyc.send(name,@symbol,*rest)
   end
 

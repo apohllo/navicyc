@@ -11,16 +11,16 @@ Ext.BLANK_IMAGE_URL = baseUrl() + '/stylesheets/images/default/s.gif';
 Ext.onReady(function() {
     Ext.QuickTips.init();
 
-    var symbolPanel = new SymbolPanel();
+    var searchPanel = new SearchPanel();
     var mainPanel = new MainPanel();
     var myData = [];
 
-    symbolPanel.store.loadData(myData);
-    symbolPanel.on('show_element', function(symbol, type) {
-        mainPanel.showSymbolTab(symbol, type);
+    searchPanel.symbolPanel.store.loadData(myData);
+    searchPanel.searchForm.on('show_element', function(symbol, type, id) {
+        mainPanel.showSymbolTab(symbol, type, id);
     });
-    mainPanel.on('element_loaded', function(symbol, type) {
-        symbolPanel.addToStore(symbol, type);
+    mainPanel.on('element_loaded', function(symbol, type, id) {
+        searchPanel.symbolPanel.addToStore(symbol, type, id);
     });
     //mainPanel.items.get(0).expandTree();
 
@@ -35,11 +35,11 @@ Ext.onReady(function() {
                 border: false,
                 margins: '0 0 5 0'
             },
-            symbolPanel,
+            searchPanel,
             mainPanel
         ]
     });
 
     viewport.doLayout();
-    symbolPanel.focusSearchField();
+    //symbolPanel.focusSearchField();
 });

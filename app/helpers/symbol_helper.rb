@@ -6,7 +6,7 @@ module SymbolHelper
   def format_comment(comment)
     if comment
       comment.to_s.gsub(/#\$[\w|-]+,?/) do |symbol|
-        link_to symbol[2..-1].sub(/,$/,""),"#"
+        link_to symbol[2..-1].sub(/,$/,""),"#", :class => "symbol"
       end
     else
       ""

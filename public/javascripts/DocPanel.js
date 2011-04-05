@@ -7,7 +7,9 @@ var DocPanel = Ext.extend(Ext.Panel, {
 
     constructor: function(config){
       this.url = config['url'];
-      this.symbol = config['symbol'];
+      this.name = config['name'];
+      this.type = config['type'];
+      this.id = config['id'];
       DocPanel.superclass.constructor.call(this,config);
     },
 
@@ -19,7 +21,7 @@ var DocPanel = Ext.extend(Ext.Panel, {
                 width: 200,
                 split: true,
                 margins: '0 5 5 0',
-                symbol: this.symbol,
+                name: this.name,
                 root : {
                   nodeType: 'async',
                   text: 'assertions',
@@ -33,7 +35,9 @@ var DocPanel = Ext.extend(Ext.Panel, {
                 autoLoad: {
                     url: this.url,
                     params: {
-                        name: this.symbol
+                        name: this.name,
+                        type: this.type,
+                        id: this.id
                     }
                 }
             } ]

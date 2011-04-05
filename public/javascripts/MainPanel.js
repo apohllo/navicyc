@@ -1,4 +1,14 @@
 var MainPanel = function() {
+    this.api_panel = new ApiPanel({
+            id: 'api-panel',
+            title: 'NaviCyc API',
+            autoScroll: true
+        });
+    this.ckan_panel = new CkanPanel({
+            id: 'ckan-panel',
+            title: 'CKAN',
+            autoScroll: true
+        });
     MainPanel.superclass.constructor.call(this, {
         region: 'center',
         margins: '0 5 5 0',
@@ -9,16 +19,7 @@ var MainPanel = function() {
         enableTabScroll: true,
         activeTab: 0,
         tabprefix: 'tab-',
-
-        items: [new ApiPanel({
-            id: 'api-panel',
-            title: 'NaviCyc API',
-            autoScroll: true
-        }),new CkanPanel({
-            id: 'ckan-panel',
-            title: 'CKAN',
-            autoScroll: true
-        })]
+        items: [this.api_panel, this.ckan_panel]
     });
 };
 
@@ -30,15 +31,25 @@ Ext.extend(MainPanel, Ext.TabPanel, {
 
     onClick: function(e, target) {
         if (target.localName == 'a') {
-            this.showSymbolTab(target.innerHTML, 'symbol');
+          if(target.className == 'symbol'){
+            this.showSymbolTab(target.innerHTML, 'symbol', target.innerHTML);
+          }
         }
         e.stopEvent();
     },
-    showSymbolTab: function(symbol, type) {
-        if (this.isSymbolLoaded(symbol)) {
-            this.setActiveSymbol(symbol);
-        } else {
-            this.addSymbolTab(symbol, type);
+    showSymbolTab: function(symbol, type, id) {
+        if(type == 'symbol'){
+          if (this.isSymbolLoaded(symbol)) {
+              this.setActiveSymbol(symbol);
+          } else {
+              this.addSymbolTab(symbol, type, id);
+          }
+        } else if(type == 'api'){
+          this.setActiveTab(this.api_panel);
+          this.api_panel.tree.loadContents("function_id",id);
+        } else if(type == 'ckan'){
+          this.setActiveTab(this.ckan_panel);
+          this.ckan_panel.tree.loadContents("package_id",symbol,id);
         }
     },
     isSymbolLoaded: function(symbol) {
@@ -56,21 +67,20 @@ Ext.extend(MainPanel, Ext.TabPanel, {
         var tab = this.getComponent(tabId);
         this.setActiveTab(tab);
     },
-    addSymbolTab: function(symbol, type) {
-        var url;
-        if (type === 'symbol') {
-            url = "/symbol/show";
-        } else {
-            url = "/symbol/show_denotation/";
+    addSymbolTab: function(name, type, id) {
+        if (!(type === 'symbol' || type === 'api' || type === 'ckan'
+              || type === 'dbpedia')) {
+          return;
         }
-        url = baseUrl() + url;
         var newPanel = this.add(new DocPanel({
-            id: this.tabprefix + symbol,
-            title: symbol,
-            url: url,
-            symbol: symbol
+            id: this.tabprefix + name,
+            title: name,
+            url: baseUrl() + "/search/show/",
+            name: name,
+            type: type,
+            id: id
         }));
         this.setActiveTab(newPanel);
-        this.fireEvent('element_loaded', symbol, type);
+        this.fireEvent('element_loaded', name, type, id);
     }
 });

@@ -3,21 +3,22 @@ var ApiPanel = Ext.extend(Ext.Panel, {
         type: 'border'
     },
     initComponent: function() {
-        Ext.apply(this, {
-            items: [new ApiTree({
+        this.tree = new ApiTree({
                     region: 'west',
                     width: 400,
                     split: true,
                     margins: '0 5 5 0',
                     autoScroll: true
-                }), new Ext.Panel({
+                });
+        this.contents = new Ext.Panel({
                     id: 'api_contents',
                     region: 'center',
                     split: true,
                     margins: '0 5 5 0',
                     autoScroll: true,
-                })
-            ]
+                });
+        Ext.apply(this, {
+            items: [this.tree, this.contents]
         });
         ApiPanel.superclass.initComponent.call(this);
     },
