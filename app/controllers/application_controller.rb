@@ -26,6 +26,12 @@ class ApplicationController < ActionController::Base
     current_user && current_user.admin?
   end
 
+  def admin_required
+    if !admin?
+      redirect_to :controller => "home"
+    end
+  end
+
   def authenticate
     if !current_user
       redirect_to :controller => "user_sessions", :action => "new"
