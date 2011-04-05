@@ -28,6 +28,14 @@ class CkanController < ApplicationController
       format = "" if format.nil?
       resource = CKAN::Package.new(package).resources.find{|r| r.format == format}
       render :partial => "resource", :object => resource
+    when "package_id"
+      render :partial => "package", :object => CKAN::Package.new(params[:text])
     end
+  end
+
+  def complete
+    packages = CKAN::Package.find(:q => params[:query])
+    packages = packages.map{|p| {:name => p.name, :type => "ckan", :id => p.id}}
+    render :json => {:success => true, :data => packages}
   end
 end

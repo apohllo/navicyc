@@ -26,14 +26,23 @@ class ApiController < ApplicationController
       if category.functions.empty?
         @functions = category.children.map{|c| c.functions}.flatten
       else
-        @functions = category.functions 
+        @functions = category.functions
       end
     when "function"
       @functions = Function.find_all_by_name(params[:text])
     when "language"
       @language = Language.find_by_name(params[:text])
       render :action => "language"
+    when "function_id"
+      # from search form
+      @functions = [Function.find(params[:text])]
     end
+  end
+
+  def complete
+    functions = Function.find(:all, :conditions => ["name like ?",params[:query]+"%"])
+    functions = functions.map{|c| {:name => c.name, :type => "api", :id => c.id}}
+    render :json => {:success => true, :data => functions}
   end
 
 end

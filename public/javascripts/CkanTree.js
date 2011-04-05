@@ -14,14 +14,8 @@ var CkanTree = Ext.extend(Ext.tree.TreePanel, {
     },
     listeners: {
         click: function(node) {
-            Ext.getCmp("ckan_contents").body.load({
-                url: baseUrl() + '/ckan/show',
-                params: {
-                    type: node.attributes.type,
-                    text: node.attributes.text,
-                    id: node.attributes.id
-                }
-            });
+                 this.loadContents(node.attributes.type,
+                   node.attributes.text,node.attributes.id);
         }
     },
     root: {
@@ -29,6 +23,17 @@ var CkanTree = Ext.extend(Ext.tree.TreePanel, {
         text: 'CKAN',
         type: 'root',
         expanded: true
+    },
+    loadContents: function(type,text,id){
+            Ext.getCmp("ckan_contents").body.load({
+                url: baseUrl() + '/ckan/show',
+                params: {
+                    type: type,
+                    text: text,
+                    id: id
+                }
+            });
     }
+
 });
 
