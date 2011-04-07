@@ -24,7 +24,7 @@ module SymbolHelper
           return_string += '</div>'
         else
           if generalize.is_a?(Symbol)
-            return_string += link_to("#{generalize} ", "#")
+            return_string += link_to("#{generalize} ", "#", :class => "symbol")
           else
             return_string += format_comment(generalize)
           end

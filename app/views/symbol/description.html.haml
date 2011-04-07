@@ -11,7 +11,7 @@
         - @symbol.arguments.each do |argument,index|
           %li
             %span.name= argument_title(index)
-            = link_to argument,"#"
+            = link_to argument,"#", :class => "symbol"
   - if @symbol.relation? || @symbol.collection? || @symbol.microtheory?
     #generalization.section
       %span.name
