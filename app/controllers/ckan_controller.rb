@@ -1,16 +1,16 @@
 class CkanController < ApplicationController
   def node
-    case params[:type]
+    case params[:level]
     when "root"
-      items = CKAN::Group.find.map{|g| {:type => "group",
+      items = CKAN::Group.find.map{|g| {:level => "group",
         :text => g.name, :id => g.name}}.sort_by{|e| e[:text]}
     when "group"
       items = CKAN::Group.new(params[:id]).packages.
-        map{|p| {:type => "package", :text => p.title, :id => p.id}}.
+        map{|p| {:level => "package", :text => p.title, :id => p.id}}.
         sort_by{|e| e[:text]}
     when "package"
       items = CKAN::Package.new(params[:id]).resources.
-        map{|r| {:type => "resource", :text => "#{r.description} (#{r.format})",
+        map{|r| {:level => "resource", :text => "#{r.description} (#{r.format})",
           :id => "#{params[:id]}##{r.format}", :leaf => true}}.
           sort_by{|e| e[:text]}
     end
@@ -18,7 +18,7 @@ class CkanController < ApplicationController
   end
 
   def show
-    case params[:type]
+    case params[:level]
     when "group"
       render :partial => "group", :object => CKAN::Group.new(params[:id])
     when "package"
@@ -35,7 +35,7 @@ class CkanController < ApplicationController
 
   def complete
     packages = CKAN::Package.find(:q => params[:query])
-    packages = packages.map{|p| {:name => p.name, :type => "ckan", :id => p.id}}
+    packages = packages.map{|p| {:name => p.name, :source => "ckan", :id => p.id}}
     render :json => {:success => true, :data => packages}
   end
 end

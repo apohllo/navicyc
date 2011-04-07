@@ -16,11 +16,11 @@ Ext.onReady(function() {
     var myData = [];
 
     searchPanel.symbolPanel.store.loadData(myData);
-    searchPanel.searchForm.on('show_element', function(symbol, type, id) {
-        mainPanel.showSymbolTab(symbol, type, id);
+    searchPanel.searchForm.on('show_element', function(symbol, source, id) {
+        mainPanel.showSymbolTab(symbol, source, id);
     });
-    mainPanel.on('element_loaded', function(symbol, type, id) {
-        searchPanel.symbolPanel.addToStore(symbol, type, id);
+    mainPanel.on('element_loaded', function(symbol, source, id) {
+        searchPanel.symbolPanel.addToStore(symbol, source, id);
     });
     //mainPanel.items.get(0).expandTree();
 

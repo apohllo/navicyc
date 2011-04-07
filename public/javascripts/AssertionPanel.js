@@ -1,4 +1,4 @@
-var DocPanel = Ext.extend(Ext.Panel, {
+var AssertionPanel = Ext.extend(Ext.Panel, {
     closable: true,
     autoScroll: true,
     layout: {
@@ -8,9 +8,9 @@ var DocPanel = Ext.extend(Ext.Panel, {
     constructor: function(config){
       this.url = config['url'];
       this.name = config['name'];
-      this.type = config['type'];
+      this.source = config['source'];
       this.id = config['id'];
-      DocPanel.superclass.constructor.call(this,config);
+      AssertionPanel.superclass.constructor.call(this,config);
     },
 
     initComponent: function () {
@@ -18,13 +18,16 @@ var DocPanel = Ext.extend(Ext.Panel, {
             items: [new AssertionTree({
                 id: this.id + '_assertions',
                 region: 'west',
-                width: 200,
+                width: 300,
                 split: true,
                 margins: '0 5 5 0',
                 name: this.name,
+                source: this.source,
+                item_id: this.id,
                 root : {
                   nodeType: 'async',
                   text: 'assertions',
+                  expanded: true,
                 }
             }), {
                 id: this.id + '_contents',
@@ -36,13 +39,13 @@ var DocPanel = Ext.extend(Ext.Panel, {
                     url: this.url,
                     params: {
                         name: this.name,
-                        type: this.type,
+                        source: this.source,
                         id: this.id
                     }
                 }
             } ]
         });
-        DocPanel.superclass.initComponent.call(this);
+        AssertionPanel.superclass.initComponent.call(this);
     },
     expandTree : function(){
         this.items.get(0).getRootNode().expand();

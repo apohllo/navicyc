@@ -44,6 +44,7 @@ require 'acts_as_tree'
 require 'cycr'
 require 'ckan'
 require 'bluecloth'
+require 'sparql/client'
 
 begin
   CYC = Cyc::Client.new

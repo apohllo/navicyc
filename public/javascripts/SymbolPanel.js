@@ -11,7 +11,7 @@ Ext.extend(SymbolPanel, Ext.grid.GridPanel, {
             store: new Ext.data.ArrayStore({
                 fields: [
                     'name',
-                    'type',
+                    'source',
                     'id'
                 ]
             }),
@@ -29,19 +29,19 @@ Ext.extend(SymbolPanel, Ext.grid.GridPanel, {
                 cellclick: function(grid, rowIndex) {
                     var record = grid.getStore().getAt(rowIndex);
                     var name = record.get('name');
-                    var type = record.get('type');
+                    var source = record.get('source');
                     var id = record.get('id');
-                    that.fireEvent('show_element', name, type, id);
+                    that.fireEvent('show_element', name, source, id);
                 }
             }
         });
         SymbolPanel.superclass.initComponent.call(this);
     },
-    addToStore: function(name, type, id) {
+    addToStore: function(name, source, id) {
         if (this.store.findExact('name', name) === -1) {
             this.store.insert(0, new Ext.data.Record({
                 name:name,
-                type:type,
+                source:source,
                 id:id
             }));
         }
@@ -69,7 +69,7 @@ var SearchForm = Ext.extend(Ext.form.FormPanel, {
                   function(store, options){
                     store.url = baseUrl() + '/' +
                       that.searchGroup.getValue().inputValue + '/complete';
-                    store.baseParams.type = that.searchGroup.getValue().inputValue;
+                    store.baseParams.source = that.searchGroup.getValue().inputValue;
                   }
                 }
 
@@ -87,7 +87,7 @@ var SearchForm = Ext.extend(Ext.form.FormPanel, {
             selectOnFocus: true,
             listeners: {
                 select: function(combo, record) {
-                    that.fireEvent('show_element', record.json.name, record.json.type, record.json.id);
+                    that.fireEvent('show_element', record.json.name, record.json.source, record.json.id);
                 },
                 keypress: function(combo, e) {
                     if (e.getKey() === Ext.EventObject.ENTER && !combo.findRecord('name', combo.getValue())) {
@@ -104,21 +104,21 @@ var SearchForm = Ext.extend(Ext.form.FormPanel, {
                 items: [
                   {
                     boxLabel: "CYC",
-                    name: "type",
+                    name: "source",
                     inputValue: "symbol",
                     checked: true
                   }, {
                     boxLabel: "CYC API",
-                    name: "type",
+                    name: "source",
                     inputValue: "api",
                   }, {
                     boxLabel: "CKAN",
-                    name: "type",
+                    name: "source",
                     inputValue: "ckan",
                   }, {
-                    boxLabel: "DBpedia",
-                    name: "type",
-                    inputValue: "dbpedia",
+                    boxLabel: "SPARQL",
+                    name: "source",
+                    inputValue: "sparql",
                   }
                 ]
               });

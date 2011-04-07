@@ -12,55 +12,58 @@ class SymbolController < ApplicationController
     render :action => "show"
   end
 
-  def assertion_tree
-    #cyc.debug = true
+  def tree
+    #cyc.debug = false
     @symbol = CycSymbol.new(params[:id])
-    case params[:type]
+    case params[:level]
     when "general"
       redirect_to :action => "show", :name => params[:id] and return
     when "arg"
       index = params[:index]
       render :json => (@symbol.gaf_index(index).map do |relation,count|
-        {:text => index_title(relation,count), :type => "relation",
-          :index => index, :relation => relation.to_cyc(true)}
+        {:text => index_title(relation,count), :level => "relation",
+          :index => index, :relation => relation.to_cyc(true), :source => "symbol"}
       end)
     when "relation"
       index = params[:index]
       relation = params[:relation]
       render :json => (@symbol.gaf_index(index,relation).map do |mt,count|
-        {:text => index_title(mt,count), :type => "relation",
+        {:text => index_title(mt,count), :level => "relation",
           :index => index, :relation => relation,
-          :mt => mt.to_cyc(true), :leaf => true}
+          :mt => mt.to_cyc(true), :leaf => true, :source => "symbol"}
       end)
     when "extent"
       render :json => (@symbol.extent_index.map do |mt,count|
-        {:text => index_title(mt,count), :type => "extent_in_mt",
+        {:text => index_title(mt,count), :level => "extent_in_mt",
           :mt => mt.to_cyc(true), :leaf => true}
       end)
     else
       indices = @symbol.gaf_index
-      tree = [ {:text => "General info", :type => "general", :leaf => true} ] +
-        indices.map{|i,count| {:text => "Arg #{i} : #{count}",
-        :type => "arg", :index => i}}
+      tree = [ {:text => "General info", :level => "general", :leaf => true,
+        :source => "symbol"} ] + indices.map{|i,count| {:text => "Arg #{i} : #{count}",
+        :level => "arg", :index => i, :source => "symbol"}}
       if @symbol.relation?
-        tree.concat([{:text => "Predicate Extent", :type => "extent"}])
+        tree.concat([{:text => "Predicate Extent", :level => "extent"}])
       end
       render :json => tree
     end
   end
 
-  def assertions
+  def show
     @symbol = CycSymbol.new(params[:id])
     mt = params[:mt]
-    mt = nil if mt.empty?
+    mt = nil if mt.blank?
     relation = params[:relation]
-    relation = nil if relation.empty?
-    case params[:type]
+    relation = nil if relation.blank?
+    case params[:level]
     when "general"
       redirect_to :action => "show", :name => params[:id]
       return
     when "extent","extent_in_mt"
       @assertions = @symbol.extent_tree(mt)
+    when nil
+      @symbol = CycSymbol.new(params[:name])
+      render :action => "description"
     else
       index = params[:index].to_i
       @assertions = @symbol.assertions_tree(index,relation,mt)
@@ -69,7 +72,7 @@ class SymbolController < ApplicationController
 
   def complete
     completes = cyc.constant_complete params[:query]
-    completes = completes.map{|c| {:name => c, :type => "symbol", :id => c} }
+    completes = completes.map{|c| {:name => c, :source => "symbol", :id => c} }
     render :json => {:success => true, :data => completes}
   end
 

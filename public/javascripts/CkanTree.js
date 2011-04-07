@@ -6,7 +6,7 @@ var CkanTree = Ext.extend(Ext.tree.TreePanel, {
         url = baseUrl() + '/ckan/node';
         this.loader = new Ext.tree.TreeLoader({dataUrl:url});
         this.loader.on("beforeload", function(treeLoader,node) {
-            this.baseParams.type = node.attributes.type;
+            this.baseParams.level = node.attributes.level;
             this.baseParams.text = node.attributes.text;
             this.baseParams.id = node.attributes.id;
         });
@@ -14,21 +14,21 @@ var CkanTree = Ext.extend(Ext.tree.TreePanel, {
     },
     listeners: {
         click: function(node) {
-                 this.loadContents(node.attributes.type,
+                 this.loadContents(node.attributes.level,
                    node.attributes.text,node.attributes.id);
         }
     },
     root: {
         nodeType: 'async',
         text: 'CKAN',
-        type: 'root',
+        level: 'root',
         expanded: true
     },
-    loadContents: function(type,text,id){
+    loadContents: function(level,text,id){
             Ext.getCmp("ckan_contents").body.load({
                 url: baseUrl() + '/ckan/show',
                 params: {
-                    type: type,
+                    level: level,
                     text: text,
                     id: id
                 }

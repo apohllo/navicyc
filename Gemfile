@@ -8,4 +8,5 @@ gem "acts_as_tree"
 gem "ckan", "~> 0.0.2"
 gem "bluecloth", "2.1.0"
 gem 'authlogic'
+gem "sparql-client", "~> 0.0.9"
 

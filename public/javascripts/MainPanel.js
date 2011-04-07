@@ -37,50 +37,54 @@ Ext.extend(MainPanel, Ext.TabPanel, {
         }
         e.stopEvent();
     },
-    showSymbolTab: function(symbol, type, id) {
-        if(type == 'symbol'){
-          if (this.isSymbolLoaded(symbol)) {
-              this.setActiveSymbol(symbol);
+    showSymbolTab: function(symbol, source, id) {
+        if(source == 'symbol'){
+          if (this.isResourceLoaded(symbol)) {
+              this.setActiveResource(symbol);
           } else {
-              this.addSymbolTab(symbol, type, id);
+              this.addResourceTab(symbol, source, id);
           }
-        } else if(type == 'api'){
+        } else if(source == 'api'){
           this.setActiveTab(this.api_panel);
           this.api_panel.tree.loadContents("function_id",id);
-        } else if(type == 'ckan'){
+        } else if(source == 'ckan'){
           this.setActiveTab(this.ckan_panel);
           this.ckan_panel.tree.loadContents("package_id",symbol,id);
+        } else if(source == 'sparql'){
+          if (this.isResourceLoaded(id)) {
+              this.setActiveResource(id);
+          } else {
+              this.addResourceTab(symbol, source, id);
+          }
         }
     },
-    isSymbolLoaded: function(symbol) {
-        var tabId = this.tabprefix + symbol;
+    isResourceLoaded: function(id) {
+        var tabId = this.tabprefix + id;
         var tab = this.getComponent(tabId);
         if (tab) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     },
-    setActiveSymbol: function(symbol) {
-        var tabId = this.tabprefix + symbol;
+    setActiveResource: function(id) {
+        var tabId = this.tabprefix + id;
         var tab = this.getComponent(tabId);
         this.setActiveTab(tab);
     },
-    addSymbolTab: function(name, type, id) {
-        if (!(type === 'symbol' || type === 'api' || type === 'ckan'
-              || type === 'dbpedia')) {
+    addResourceTab: function(name, source, id) {
+        if (!(source === 'symbol' || source === 'sparql')) {
           return;
         }
-        var newPanel = this.add(new DocPanel({
-            id: this.tabprefix + name,
+        var newPanel = this.add(new AssertionPanel({
+            id: this.tabprefix + id,
             title: name,
             url: baseUrl() + "/search/show/",
             name: name,
-            type: type,
+            source: source,
             id: id
         }));
         this.setActiveTab(newPanel);
-        this.fireEvent('element_loaded', name, type, id);
+        this.fireEvent('element_loaded', name, source, id);
     }
 });

@@ -12,12 +12,14 @@ GEM
       activesupport (= 2.3.11)
     activesupport (2.3.11)
     acts_as_tree (0.1.1)
+    addressable (2.2.4)
     authlogic (2.1.6)
       activesupport
     bluecloth (2.1.0)
     ckan (0.0.2)
     cycr (0.0.7)
     haml (3.0.21)
+    json_pure (1.5.1)
     rack (1.1.2)
     rails (2.3.11)
       actionmailer (= 2.3.11)
@@ -27,6 +29,11 @@ GEM
       activesupport (= 2.3.11)
       rake (>= 0.8.3)
     rake (0.8.7)
+    rdf (0.3.1)
+      addressable (>= 2.2)
+    sparql-client (0.0.9)
+      json_pure (>= 1.4.2)
+      rdf (~> 0.3.0)
     sqlite3-ruby (1.2.5)
 
 PLATFORMS
@@ -40,4 +47,5 @@ DEPENDENCIES
   cycr (= 0.0.7)
   haml (= 3.0.21)
   rails (= 2.3.11)
+  sparql-client (~> 0.0.9)
   sqlite3-ruby (= 1.2.5)

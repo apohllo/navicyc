@@ -5,7 +5,7 @@ var ApiPanel = Ext.extend(Ext.Panel, {
     initComponent: function() {
         this.tree = new ApiTree({
                     region: 'west',
-                    width: 400,
+                    width: 300,
                     split: true,
                     margins: '0 5 5 0',
                     autoScroll: true

@@ -1,33 +1,14 @@
 %div{:id => @symbol}
   = render :partial => "caption"
-  #comment.section
-    = format_comment @symbol.comment
-  #instance_of.section
-    %span.name Instance of
-    = format_all_genls @symbol.min_isa
-  - if @symbol.relation?
-    #arguments.section
-      %ul
-        - @symbol.arguments.each do |argument,index|
-          %li
-            %span.name= argument_title(index)
-            = link_to argument,"#"
-  - if @symbol.relation? || @symbol.collection? || @symbol.microtheory?
-    #generalization.section
-      %span.name
-        - if @symbol.microtheory?
-          Inherits from
-        - else
-          A type of
-      = format_all_genls @symbol.generalizations
-    #specialization.section
-      %span.name
-        - if @symbol.microtheory?
-          Is inherited by
-        - else
-          Subtypes
-      = format_all_genls @symbol.specializations
-  - if @symbol.collection?
-    #instances.section
-      %span.name Instances
-      = format_all_genls @symbol.instances
+  - @assertions.each do |index,relations|
+    #assertions.section
+      %span.name= "GAF Arg : #{index}"
+      - (relations || []).each do |relation,mts|
+        %br
+        %span.name= format_comment(relation).tr("'","")
+        %br
+        - (mts || []).each do |mt,assertions|
+          = "Mt : #{format_comment(mt.to_cyc(true)).tr("'","")}"
+          %ul
+            - (assertions || []).each do |assertion|
+              %li= format_assertion assertion,@symbol
