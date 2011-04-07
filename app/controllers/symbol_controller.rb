@@ -1,8 +1,4 @@
 class SymbolController < ApplicationController
-  def show
-    @symbol = CycSymbol.new(params[:name])
-  end
-
   def show_denotation
     @name = params[:name]
     denotaion = cyc.denotation_mapper params[:name]
