@@ -52,3 +52,5 @@ begin
 rescue Errno::ECONNREFUSED => ex
   puts "Connection to CYC not estabilished"
 end
+
+SPARQL_CLIENTS = {}

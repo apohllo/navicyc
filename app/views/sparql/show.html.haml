@@ -1,0 +1,11 @@
+%div
+  - @assertions.each do |index,relations|
+    #assertions.section
+      %span.name= "Arg : #{index}"
+      - (relations || []).each do |relation,assertions|
+        %br
+        %span.name= format_comment(relation)
+        /%span.name= relation
+        %ul
+          - (assertions || []).each do |assertion|
+            %li= link_to_resource assertion
