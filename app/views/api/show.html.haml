@@ -4,4 +4,7 @@
     %span.name= function.name
     = "#{function.arguments} #{function.result}"
     %br
-    %pre= function.documentation
+    - if function.documentation =~ /\n/
+      %pre= function.documentation
+    - else
+      = function.documentation
