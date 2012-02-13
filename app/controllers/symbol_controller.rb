@@ -67,9 +67,11 @@ class SymbolController < ApplicationController
   end
 
   def complete
-    completes = cyc.constant_complete params[:query]
-    completes = completes.map{|c| {:name => c, :source => "symbol", :id => c} }
-    render :json => {:success => true, :data => completes}
+    symbols = cyc.constant_complete(params[:query])
+    symbols = symbols.map do |symbol|
+      {:name => symbol, :source => "symbol", :id => symbol}
+    end
+    render :json => {:success => true, :data => symbols}
   end
 
   protected

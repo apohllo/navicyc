@@ -6,11 +6,15 @@ module SymbolHelper
   def format_comment(comment)
     if comment
       comment.to_s.gsub(/#\$[\w|-]+,?/) do |symbol|
-        link_to symbol[2..-1].sub(/,$/,""),"#", :class => "symbol"
+        link_to_symbol(symbol[2..-1])
       end
     else
       ""
     end
+  end
+
+  def link_to_symbol(symbol)
+    link_to symbol.to_s.sub(/,$/,""),"#", :class => "symbol"
   end
 
   def format_all_genls(generalize_arr)
@@ -24,7 +28,7 @@ module SymbolHelper
           return_string += '</div>'
         else
           if generalize.is_a?(Symbol)
-            return_string += link_to("#{generalize} ", "#", :class => "symbol")
+            return_string += link_to_symbol(generalize)+ " "
           else
             return_string += format_comment(generalize)
           end
