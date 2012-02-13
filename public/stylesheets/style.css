@@ -67,3 +67,13 @@ a:hover {
 pre, .monospace {
   font-family: monospace;
 }
+.console_row {
+  padding:5px !important;
+  border-bottom:1px solid #ccc;
+}
+.console_row.query {
+  color: green;
+}
+.console_row.error {
+  color: red;
+}

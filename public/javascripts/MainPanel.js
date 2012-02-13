@@ -9,6 +9,11 @@ var MainPanel = function() {
             title: 'CKAN',
             autoScroll: true
         });
+    this.console_panel = new ConsolePanel({
+            id: 'console-panel',
+            title: 'SubL console',
+            autoScroll: true
+    });
     MainPanel.superclass.constructor.call(this, {
         region: 'center',
         margins: '0 5 5 0',
@@ -19,7 +24,7 @@ var MainPanel = function() {
         enableTabScroll: true,
         activeTab: 0,
         tabprefix: 'tab-',
-        items: [this.api_panel, this.ckan_panel]
+        items: [this.api_panel, this.ckan_panel, this.console_panel]
     });
 };
 
