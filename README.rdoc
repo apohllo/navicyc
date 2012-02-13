@@ -4,7 +4,7 @@ Web navigator for http://www.opencyc.org/ written in RoR framework and ExtJs lib
 
 Screenshots available on the github wiki: https://github.com/apohllo/navicyc/wiki
 
-Live demo availabe at http://http://klon.wzks.uj.edu.pl/opencyc/ 
+Live demo availabe at http://klon.wzks.uj.edu.pl/opencyc/ 
   
   login: admin
   password: password
